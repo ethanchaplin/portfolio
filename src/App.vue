@@ -1,17 +1,61 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import Loading from "./components/Loading.vue";
+import Typewriter from "typewriter-effect/dist/core";
+import MovingBackground from "./components/MovingBackground.vue";
+import { ref } from "vue";
+const professions = [
+  "Software Developer",
+  "Photographer",
+  "Musician",
+  "Lighting Designer",
+  "Audio Engineer",
+  "Tinkerer",
+  "Experimenter",
+  "Problem Solver",
+];
+
+const loaded = ref(false);
+
+const randProfessions = professions.sort(() => 0.5 - Math.random());
+
+const showTitle = () => {
+  loaded.value = true;
+  const title = document.getElementById("title");
+  const typewriter = new Typewriter(title, {
+    loop: false,
+    delay: 55,
+    wrapperClassName: "titleWrapper",
+    cursorClassName: "titleCursor",
+    cursor: "",
+  });
+  typewriter
+    .typeString("Ethan Chaplin")
+    .pauseFor(300)
+    .callFunction(() => {
+      const sect = document.getElementById("subtitle");
+      const subType = new Typewriter(sect, {
+        loop: true,
+        autoStart: true,
+        delay: 75,
+        wrapperClassName: "subWrapper",
+        cursorClassName: "subCursor",
+        cursor: "_",
+        deleteSpeed: 30,
+        strings: randProfessions,
+      });
+
+      subType;
+    })
+    .start();
+};
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <Loading @loaded="showTitle" />
+  <MovingBackground>
+    <div id="title" />
+    <div id="subtitle" />
+  </MovingBackground>
 </template>
 
 <style scoped>
@@ -26,5 +70,10 @@ import HelloWorld from './components/HelloWorld.vue'
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+.typer {
+  width: 100%;
+  height: 100%;
 }
 </style>
