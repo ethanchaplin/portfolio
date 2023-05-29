@@ -52,6 +52,7 @@ onMounted(() => {
 .ascii {
   font-family: Consolas;
   position: fixed;
+  z-index: 8;
   top: 45vh;
   left: 45vw;
   font-size: 1.5rem;

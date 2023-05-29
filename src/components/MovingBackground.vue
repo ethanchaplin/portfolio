@@ -18,7 +18,6 @@ const konamiPattern = [
   "a",
 ];
 let current = 0;
-
 let colorMode = false;
 
 class MovingPoint {

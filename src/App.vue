@@ -94,9 +94,11 @@ const showTitle = () => {
       ></a>
     </div>
     <div class="nav-right">
-      <h3>About Me</h3>
-      <h3>Year In Review</h3>
-      <h3>Honors Projects</h3>
+      <h3><a href="#">About Me</a></h3>
+      <h3><a href="https://ethanchaplin.com/old/review/">Year In Review</a></h3>
+      <h3>
+        <a href="https://ethanchaplin.com/old/projects/">Honors Projects</a>
+      </h3>
     </div>
   </div>
   <MovingBackground>
@@ -123,6 +125,11 @@ const showTitle = () => {
   padding-right: 10px;
   text-decoration: none;
   color: white;
+}
+
+h3 a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .nav div {
