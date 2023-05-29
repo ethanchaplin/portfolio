@@ -5,20 +5,68 @@ import { onMounted } from "vue";
 const grey = new paper.Color(0.5, 0.5, 0.5);
 const white = new paper.Color(0.7, 0.7, 0.7);
 
+const konamiPattern = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "b",
+  "a",
+];
+let current = 0;
+
+let colorMode = false;
+
 class MovingPoint {
   point: paper.Path.Circle;
   velocity: number;
   direction: number;
   id: string;
-  constructor(point: paper.Path.Circle, velocity: number, direction: number) {
+  color: paper.Color;
+  constructor(
+    point: paper.Path.Circle,
+    velocity: number,
+    direction: number,
+    color: paper.Color
+  ) {
     this.point = point;
     this.velocity = velocity;
     this.direction = direction;
     this.id = crypto.randomUUID();
+    this.color = color;
   }
 }
 
 let movCircleList: MovingPoint[] = [];
+
+const keyHandler = (event: KeyboardEvent) => {
+  if (
+    konamiPattern.indexOf(event.key) < 0 ||
+    event.key !== konamiPattern[current]
+  ) {
+    current = 0;
+    return;
+  }
+
+  current++;
+
+  if (konamiPattern.length === current) {
+    current = 0;
+    colorMode = !colorMode;
+    movCircleList.forEach((value) => {
+      value.point.strokeColor = colorMode ? value.color : grey;
+      value.point.fillColor = colorMode ? value.color : grey;
+      value.point.shadowColor = colorMode ? value.color : white;
+    });
+  }
+};
+
+document.addEventListener("keydown", keyHandler, false);
+
 let canvas: HTMLCanvasElement;
 onMounted(() => {
   canvas = <HTMLCanvasElement>document.getElementById("bg-canvas");
@@ -30,31 +78,45 @@ onMounted(() => {
   paper.project.view.onClick = (event: any) => {
     const point = event.point;
     const path = new paper.Path.Circle(point, 6);
-    path.strokeColor = grey;
-    path.fillColor = grey;
+    const randomColor = new paper.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    );
+    path.strokeColor = colorMode ? randomColor : grey;
+    path.fillColor = colorMode ? randomColor : grey;
+    path.shadowColor = colorMode ? randomColor : white;
     path.shadowBlur = 20;
-    path.shadowColor = white;
+    randomColor.brightness = 1;
     const movCirc = new MovingPoint(
       path,
       Math.random() * 15,
-      Math.random() * 360
+      Math.random() * 360,
+      randomColor
     );
     movCircleList.push(movCirc);
   };
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 25; i++) {
+    const randomColor = new paper.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    );
+    randomColor.brightness = 1;
     const start = new paper.Point(
       paper.project.view.bounds.right * Math.random(),
       paper.project.view.bounds.bottom * Math.random()
     );
     const path = new paper.Path.Circle(start, 6);
-    path.strokeColor = grey;
-    path.fillColor = grey;
+    path.strokeColor = colorMode ? randomColor : grey;
+    path.fillColor = colorMode ? randomColor : grey;
     path.shadowBlur = 20;
-    path.shadowColor = white;
+    path.shadowColor = colorMode ? randomColor : white;
     const movCirc = new MovingPoint(
       path,
       Math.random() * 7,
-      Math.random() * 360
+      Math.random() * 360,
+      randomColor
     );
     movCircleList.push(movCirc);
   }
@@ -88,7 +150,7 @@ const update = (
       );
       value.point.position = newPoint;
 
-      let closest = 1000000;
+      let closest = 10000;
       let closeCircle: MovingPoint = value;
       movCircleList.forEach((compare) => {
         let checkDistance = value.point.position.getDistance(
@@ -107,10 +169,22 @@ const update = (
       });
 
       const path = new paper.Path();
-      path.strokeColor = grey;
+
+      const grad = new paper.Gradient();
+      grad.stops = [
+        new paper.GradientStop(value.color, 0),
+        new paper.GradientStop(closeCircle.color, 1),
+      ];
+      const gradColor = new paper.Color(
+        grad,
+        value.point.position,
+        closeCircle.point.position
+      );
+      path.strokeColor = colorMode ? gradColor : grey;
+
       path.strokeWidth = 3;
       path.shadowBlur = 30;
-      path.shadowColor = white;
+      path.shadowColor = colorMode ? value.color : white;
       path.moveTo(value.point.position);
       path.lineTo(closeCircle.point.position);
       pathList.push(path);
@@ -134,15 +208,33 @@ requestAnimationFrame((timestamp) => {
 
 <template>
   <canvas id="bg-canvas"></canvas>
-  <div class="abs">
-    <slot></slot>
+  <div class="center-box">
+    <div class="abs">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .abs {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
   z-index: 5;
+  backdrop-filter: blur(3px);
+  padding: 3rem;
+}
+.center-box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 #bg-canvas {
   position: fixed;

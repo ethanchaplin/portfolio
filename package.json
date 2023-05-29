@@ -1,7 +1,7 @@
 {
-  "name": "my-vue-app",
+  "name": "ethan-chaplin-portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,8 @@
     "js-cookie": "^3.0.5",
     "paper": "^0.12.17",
     "typewriter-effect": "^2.19.0",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue3-perfect-scrollbar": "^1.6.1"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
