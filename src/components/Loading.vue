@@ -50,7 +50,7 @@ onMounted(() => {
 
 <style scoped>
 .ascii {
-  font-family: Consolas;
+  font-family: Inconsolata;
   position: fixed;
   z-index: 8;
   top: 45vh;

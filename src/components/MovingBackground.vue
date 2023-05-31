@@ -89,13 +89,13 @@ onMounted(() => {
     randomColor.brightness = 1;
     const movCirc = new MovingPoint(
       path,
-      Math.random() * 15,
+      Math.random() * 0.25,
       Math.random() * 360,
       randomColor
     );
     movCircleList.push(movCirc);
   };
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 35; i++) {
     const randomColor = new paper.Color(
       Math.random(),
       Math.random(),
@@ -113,7 +113,7 @@ onMounted(() => {
     path.shadowColor = colorMode ? randomColor : white;
     const movCirc = new MovingPoint(
       path,
-      Math.random() * 7,
+      Math.random() * 0.1,
       Math.random() * 360,
       randomColor
     );
@@ -139,11 +139,13 @@ const update = (
       const dirRadians = (value.direction * Math.PI) / 180;
       const newPoint = new paper.Point(
         mod(
-          currentPoint.x + (value.velocity * Math.cos(dirRadians)) / delta,
+          currentPoint.x +
+            (value.velocity * Math.cos(dirRadians)) / (1 / delta),
           paper.project.view.bounds.right
         ),
         mod(
-          currentPoint.y + (value.velocity * Math.sin(dirRadians)) / delta,
+          currentPoint.y +
+            (value.velocity * Math.sin(dirRadians)) / (1 / delta),
           paper.project.view.bounds.bottom
         )
       );
@@ -196,11 +198,11 @@ const update = (
     path.remove();
     connections.pop();
   });
-  requestAnimationFrame((timestamp) => {
+  window.requestAnimationFrame((timestamp) => {
     update(timestamp, prevTimestamp);
   });
 };
-requestAnimationFrame((timestamp) => {
+window.requestAnimationFrame((timestamp) => {
   update(timestamp, timestamp);
 });
 </script>
