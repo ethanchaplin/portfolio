@@ -1,71 +1,10 @@
-<script setup lang="ts">
-import Loading from "./components/Loading.vue";
-import Typewriter from "typewriter-effect/dist/core";
-import MovingBackground from "./components/MovingBackground.vue";
-import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
-
-import { ref } from "vue";
-const professions = [
-  "Software Developer",
-  "Photographer",
-  "Musician",
-  "Lighting Designer",
-  "Audio Engineer",
-  "Tinkerer",
-  "Experimenter",
-  "Problem Solver",
-];
-
-const loaded = ref(false);
-
-let randProfessions = professions;
-randProfessions.push("Try ↑↑↓↓←→BA!");
-randProfessions = randProfessions.sort(() => 0.5 - Math.random());
-
-randProfessions.concat(professions.sort(() => 0.5 - Math.random()));
-
-professions.push("Try pressing anywhere!");
-
-randProfessions.concat(professions.sort(() => 0.5 - Math.random()));
-
-const showTitle = () => {
-  loaded.value = true;
-  const title = document.getElementById("title");
-  const typewriter = new Typewriter(title, {
-    loop: false,
-    delay: 55,
-    wrapperClassName: "titleWrapper",
-    cursorClassName: "titleCursor",
-    cursor: "",
-  });
-  typewriter
-    .typeString("Ethan Chaplin")
-    .pauseFor(300)
-    .callFunction(() => {
-      const sect = document.getElementById("subtitle");
-      const subType = new Typewriter(sect, {
-        loop: true,
-        autoStart: true,
-        delay: 75,
-        wrapperClassName: "subWrapper",
-        cursorClassName: "subCursor",
-        cursor: "_",
-        deleteSpeed: 30,
-        strings: randProfessions,
-      });
-
-      subType;
-    })
-    .start();
-};
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <link
     rel="stylesheet"
     href="https://unicons.iconscout.com/release/v2.1.5/css/unicons.css"
   />
-  <Loading @loaded="showTitle" />
   <div class="nav">
     <div class="nav-left">
       <a
@@ -94,17 +33,14 @@ const showTitle = () => {
       ></a>
     </div>
     <div class="nav-right">
-      <h3><a href="#">About Me</a></h3>
-      <h3><a href="https://ethanchaplin.com/old/review/">Year In Review</a></h3>
+      <h3><router-link to="/">About Me</router-link></h3>
+      <h3><router-link to="/yearreview">Year In Review</router-link></h3>
       <h3>
         <a href="https://ethanchaplin.com/old/projects/">Honors Projects</a>
       </h3>
     </div>
   </div>
-  <MovingBackground>
-    <div id="title" />
-    <div id="subtitle" />
-  </MovingBackground>
+  <router-view></router-view>
 </template>
 
 <style scoped>
@@ -169,10 +105,5 @@ h3 a {
 .nav * .uil-envelope:hover {
   filter: drop-shadow(0 0 0.6em #ffff00);
   color: #ffff00;
-}
-
-.typer {
-  width: 100%;
-  height: 100%;
 }
 </style>

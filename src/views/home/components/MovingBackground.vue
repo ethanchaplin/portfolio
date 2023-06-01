@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import paper from "paper";
-import { onMounted } from "vue";
-
+import { onMounted, ref } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
 const grey = new paper.Color(0.5, 0.5, 0.5);
 const white = new paper.Color(0.7, 0.7, 0.7);
-
+const running = ref(true);
 const konamiPattern = [
   "ArrowUp",
   "ArrowUp",
@@ -122,6 +122,10 @@ onMounted(() => {
   paper.view.update();
 });
 
+onBeforeRouteLeave(() => {
+  running.value = false;
+});
+
 const mod = (a: number, b: number) => {
   return ((a % b) + b) % b;
 };
@@ -198,9 +202,11 @@ const update = (
     path.remove();
     connections.pop();
   });
-  window.requestAnimationFrame((timestamp) => {
-    update(timestamp, prevTimestamp);
-  });
+  if (running.value) {
+    window.requestAnimationFrame((timestamp) => {
+      update(timestamp, prevTimestamp);
+    });
+  }
 };
 window.requestAnimationFrame((timestamp) => {
   update(timestamp, timestamp);
