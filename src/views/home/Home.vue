@@ -11,9 +11,6 @@ const professions = [
   "Musician",
   "Lighting Designer",
   "Audio Engineer",
-  "Tinkerer",
-  "Experimenter",
-  "Problem Solver",
 ];
 
 const loaded = ref(false);

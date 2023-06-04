@@ -7,35 +7,37 @@ let refreshRate: any = 30;
 
 let router = useRouter();
 
-const getRefreshRate = () => {
-  let trialSum = 0;
-  const numTrials = 20;
-  const trial: (
-    currentTime: DOMHighResTimeStamp,
-    prevTime: DOMHighResTimeStamp,
-    trialNum: number,
-    resolve: any
-  ) => any = (
-    currentTime: DOMHighResTimeStamp,
-    prevTime: DOMHighResTimeStamp,
-    trialNum: number,
-    resolve: any
-  ) => {
-    if (trialNum != numTrials) {
-      trialSum += currentTime - prevTime;
-      requestAnimationFrame((ts) =>
-        trial(ts, currentTime, trialNum + 1, resolve)
-      );
-    } else {
-      resolve(1000 / (trialSum / numTrials));
-    }
-  };
-  return new Promise((resolve) =>
-    requestAnimationFrame((time) =>
-      requestAnimationFrame((ts) => trial(ts, time, 0, resolve))
-    )
-  );
-};
+// for use in future
+
+// const getRefreshRate = () => {
+//   let trialSum = 0;
+//   const numTrials = 20;
+//   const trial: (
+//     currentTime: DOMHighResTimeStamp,
+//     prevTime: DOMHighResTimeStamp,
+//     trialNum: number,
+//     resolve: any
+//   ) => any = (
+//     currentTime: DOMHighResTimeStamp,
+//     prevTime: DOMHighResTimeStamp,
+//     trialNum: number,
+//     resolve: any
+//   ) => {
+//     if (trialNum != numTrials) {
+//       trialSum += currentTime - prevTime;
+//       requestAnimationFrame((ts) =>
+//         trial(ts, currentTime, trialNum + 1, resolve)
+//       );
+//     } else {
+//       resolve(1000 / (trialSum / numTrials));
+//     }
+//   };
+//   return new Promise((resolve) =>
+//     requestAnimationFrame((time) =>
+//       requestAnimationFrame((ts) => trial(ts, time, 0, resolve))
+//     )
+//   );
+// };
 const spiral = (
   t: number,
   s: number,
@@ -96,16 +98,7 @@ const animateLegs = (
   const gradientB = (i: number): number[] => {
     return gradient(hexToTuple("04E762"), hexToTuple("00A1E4"), i / numDots);
   };
-
-  const gradientC = (i: number): number[] => {
-    return gradient(hexToTuple("FFFFFF"), hexToTuple("FF0000"), i / numDots);
-  };
-
-  const gradients: ((i: number) => number[])[] = [
-    gradientA,
-    gradientB,
-    gradientC,
-  ];
+  const gradients: ((i: number) => number[])[] = [gradientA, gradientB];
 
   const generateFrame = (frameCount: number): void => {
     const progress: number = frameCount / durationFrames;
@@ -148,13 +141,30 @@ const animateLegs = (
     };
     circ.onClick = () => {
       if (circ.name.substring(0, 2) === "l0") {
-        router.push("/");
+        router.push("/yearreview/firstyear");
+      } else {
+        router.push("/yearreview/secondyear");
       }
     };
     paper.view.update();
 
     if (frameCount < durationFrames) {
       window.requestAnimationFrame(() => generateFrame(frameCount + 1));
+    } else {
+      for (let i = 0; i < numYears; i++) {
+        const circPos: paper.Point | undefined = groups
+          .filter((circle) => circle.name.substring(0, 2) === `l${i}`)
+          .pop()!.position;
+        const text = new paper.PointText(circPos);
+        text.content = `Year ${i + 1}`;
+        text.justification = "center";
+        text.fontSize = 30;
+        text.fontFamily = "Inconsolata";
+        text.fontWeight = 800;
+        text.fillColor = new paper.Color(1, 1, 1);
+
+        paper.view.update();
+      }
     }
   };
 
@@ -171,7 +181,7 @@ onMounted(async () => {
     paper.view.bounds.height / 2
   );
   // refreshRate = await getRefreshRate();
-  animateLegs(2500, 65, 2, center, 4, 15, 3);
+  animateLegs(2500, 65, 2, center, 5, 15, 3);
 
   paper.view.update();
 });
