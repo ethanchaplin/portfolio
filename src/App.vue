@@ -38,6 +38,7 @@
       <h3>
         <a href="https://ethanchaplin.com/old/projects/">Honors Projects</a>
       </h3>
+      <h3><router-link to="/">Personal Projects</router-link></h3>
     </div>
   </div>
   <router-view></router-view>
