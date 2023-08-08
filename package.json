@@ -14,7 +14,8 @@
     "typewriter-effect": "^2.19.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2",
-    "vue3-perfect-scrollbar": "^1.6.1"
+    "vue3-perfect-scrollbar": "^1.6.1",
+    "vuera": "^0.2.7"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
