@@ -11,10 +11,10 @@ import SecondYear from "./views/year-in-review/years/SecondYear.vue";
 import paper from "paper";
 
 const routes = [
-  { path: "/", component: Home },
-  { path: "/yearreview", component: YearInReview },
-  { path: "/yearreview/firstyear", component: FirstYear },
-  { path: "/yearreview/secondyear", component: SecondYear },
+  { name: 'home', path: "/", component: Home },
+  { name: 'year-review', path: "/yearreview", component: YearInReview },
+  { name: 'year-one', path: "/yearreview/firstyear", component: FirstYear },
+  { name: 'year-two', path: "/yearreview/secondyear", component: SecondYear },
 ];
 
 const router = createRouter({
