@@ -38,7 +38,7 @@
       <h3>
         <a href="https://ethanchaplin.com/old/projects/">Honors Projects</a>
       </h3>
-      <h3><router-link to="https://github.com/ethanchaplin?tab=repositories">Personal Projects</router-link></h3>
+      <h3><a href="https://github.com/ethanchaplin?tab=repositories">Personal Projects</a></h3>
     </div>
   </div>
   <router-view></router-view>
