@@ -6,11 +6,12 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  scroll-behavior: smooth;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background: rgb(0,30,65);
   background: linear-gradient(135deg, rgba(0,30,65,1) 0%, rgba(12,12,62,1) 93%);
+  background-attachment: fixed;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

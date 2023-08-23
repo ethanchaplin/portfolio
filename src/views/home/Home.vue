@@ -2,6 +2,8 @@
 import Loading from "./components/Loading.vue";
 import Typewriter from "typewriter-effect/dist/core";
 import MovingBackground from "./components/MovingBackground.vue";
+// import {Button} from "@nextui-org/react";
+// import {applyReactInVue} from 'veaury';
 import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
 
 import { ref } from "vue";
@@ -12,6 +14,8 @@ const professions = [
   "Lighting Designer",
   "Audio Engineer",
 ];
+
+// const VueButton = applyReactInVue(Button);
 
 const loaded = ref(false);
 
@@ -63,9 +67,14 @@ const showTitle = () => {
   </head>
   <Loading @loaded="showTitle" />
   <MovingBackground>
-    <div id="title" />
-    <div id="subtitle" />
+    <div class="center-box">
+      <div class="abs">
+        <div id="title" />
+        <div id="subtitle" />
+      </div>
+    </div>
   </MovingBackground>
+  <!-- <div class="h-5/6" id="lower">TEST</div> -->
 </template>
 
 <style scoped>
@@ -73,4 +82,28 @@ const showTitle = () => {
   width: 100%;
   height: 100%;
 }
+.abs {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+  z-index: 5;
+  backdrop-filter: blur(3px);
+  padding: 3rem;
+}
+.center-box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>

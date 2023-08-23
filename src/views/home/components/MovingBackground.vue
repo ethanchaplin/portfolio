@@ -215,36 +215,12 @@ window.requestAnimationFrame((timestamp) => {
 
 <template>
   <canvas id="bg-canvas"></canvas>
-  <div class="center-box">
-    <div class="abs">
-      <slot></slot>
-    </div>
-  </div>
+  <slot />
 </template>
 
 <style scoped>
-.abs {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  height: fit-content;
-  z-index: 5;
-  backdrop-filter: blur(3px);
-  padding: 3rem;
-}
-.center-box {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 #bg-canvas {
-  position: fixed;
+  position: static;
   z-index: 0;
   width: 100%;
   height: 100%;

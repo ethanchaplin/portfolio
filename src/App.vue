@@ -38,7 +38,7 @@
       <h3>
         <a href="https://ethanchaplin.com/old/projects/">Honors Projects</a>
       </h3>
-      <h3><router-link to="/">Personal Projects</router-link></h3>
+      <h3><router-link to="https://github.com/ethanchaplin?tab=repositories">Personal Projects</router-link></h3>
     </div>
   </div>
   <router-view></router-view>
@@ -56,6 +56,7 @@
   z-index: 5;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
+  z-index: 100;
 }
 .uil {
   font-size: 1.5rem;
