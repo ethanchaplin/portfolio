@@ -9,12 +9,14 @@ import YearInReview from "./views/year-in-review/YearInReview.vue";
 import FirstYear from "./views/year-in-review/years/FirstYear.vue";
 import SecondYear from "./views/year-in-review/years/SecondYear.vue";
 import paper from "paper";
+import ThirdYear from "./views/year-in-review/years/ThirdYear.vue";
 
 const routes = [
   { name: 'home', path: "/", component: Home },
   { name: 'year-review', path: "/yearreview", component: YearInReview },
   { name: 'year-one', path: "/yearreview/firstyear", component: FirstYear },
   { name: 'year-two', path: "/yearreview/secondyear", component: SecondYear },
+  { name: 'year-three', path: "/yearreview/thirdyear", component: ThirdYear },
 ];
 
 const router = createRouter({
