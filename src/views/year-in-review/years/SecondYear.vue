@@ -25,7 +25,7 @@ onMounted(() => {
   Promise.all(
     albums.map((entry, i) =>
       albumArt(entry.artist, { album: entry.album })
-        .then(url => { albumUrls.value[i] = url as string; })
+        .then((url: string) => { albumUrls.value[i] = url; })
         .catch(() => { albumUrls.value[i] = ''; })
     )
   );

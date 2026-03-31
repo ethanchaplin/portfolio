@@ -91,7 +91,7 @@ const playBell = (noteIdx: number, x: number, speed: number) => {
   // Fundamental — long decay
   const osc1 = ac.createOscillator();
   const env1 = ac.createGain();
-  osc1.type = "sine";
+  osc1.type = randV() < 0.5 ? "triangle" : "sine";
   osc1.frequency.value = freq;
   env1.gain.setValueAtTime(0.0, now);
   env1.gain.linearRampToValueAtTime(gain, now + 0.02);

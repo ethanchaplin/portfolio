@@ -25,7 +25,7 @@ onMounted(() => {
   Promise.all(
     albums.map((entry, i) =>
       albumArt(entry.artist, { album: entry.album })
-        .then(url => { albumUrls.value[i] = url as string; })
+        .then((url: string) => { albumUrls.value[i] = url; })
         .catch(() => { albumUrls.value[i] = ''; })
     )
   );
@@ -72,7 +72,7 @@ onMounted(() => {
     <ol class="flex flex-col gap-3 mb-12">
       <li v-for="(item, i) in favorites" :key="i" class="flex items-start gap-4 group">
         <span class="text-xs text-violet-400/60 font-mono pt-0.5 w-5 shrink-0">{{ String(i + 1).padStart(2, '0')
-          }}</span>
+        }}</span>
         <span class="text-sm text-neutral-300 group-hover:text-white transition-colors">{{ item }}</span>
       </li>
     </ol>
