@@ -1,92 +1,145 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { ref, onBeforeMount, } from 'vue';
-import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
-import { applyPureReactInVue, applyReactInVue } from 'veaury';
-const VueCard = applyPureReactInVue(Card);
-const VueCardHeader = applyPureReactInVue(CardHeader);
-const VueCardBody = applyReactInVue(CardBody);
-const VueImage = applyPureReactInVue(Image);
+import { ref, onBeforeMount } from 'vue';
+import albumArt from 'album-art';
 
-let router = useRouter();
+const router = useRouter();
 
-const albumYearUrls = ref<string[][]>([]);
 const albumYears = [
   [
-    { artist: "Valley", album: "Maybe" },
-    { artist: "Relient K", album: "Forget And Not Slow Down" },
-    { artist: "Coldplay", album: "Music of the Spheres" },
-    { artist: "John Mayer", album: "Sob Rock" },
+    { artist: "Valley",      album: "Maybe" },
+    { artist: "Relient K",   album: "Forget And Not Slow Down" },
+    { artist: "Coldplay",    album: "Music of the Spheres" },
+    { artist: "John Mayer",  album: "Sob Rock" },
   ],
   [
-    { artist: "half alive", album: "Conditions of A Punk" },
-    { artist: "Coldplay", album: "Parachutes" },
-    { artist: "bad suns", album: "Apocalypse Whenever" },
-    { artist: "Dayglow", album: "People In Motion" }
+    { artist: "half alive",  album: "Conditions of A Punk" },
+    { artist: "Coldplay",    album: "Parachutes" },
+    { artist: "bad suns",    album: "Apocalypse Whenever" },
+    { artist: "Dayglow",     album: "People In Motion" },
   ],
   [
-    { artist: "Relient K", album: "Mmhmm" },
-    { artist: "The Band CAMINO", album: "tryhard" },
+    { artist: "Relient K",               album: "Mmhmm" },
+    { artist: "The Band CAMINO",         album: "tryhard" },
     { artist: "The Brook and the Bluff", album: "Bluebeard" },
-    { artist: "The Strike", album: "The Lost Years" }]
+    { artist: "The Strike",              album: "The Lost Years" },
+  ],
+  [
+    { artist: "Twenty One Pilots", album: "Clancy" },
+    { artist: "COIN",              album: "I'm Not Afraid Of Music Anymore" },
+    { artist: "Dayglow",           album: "Dayglow" },
+    { artist: "bad suns",          album: "Infinite Joy" },
+  ],
 ];
 
-const creditHours = [
-  34,
-  16,
-  16
-]
+const titles    = ["Getting Used To A New Life", "Full Swing", "Experimentation", "Challenges"];
+const subtitles = ["Freshman Year", "Sophomore Year", "Pre-Junior Year", "Junior Year"];
+const routes    = ["year-one", "year-two", "year-three", "year-four"];
 
-const titles = [
-  "Getting Used To A New Life",
-  "Full Swing",
-  "Experimentation",
-];
+const albumYearUrls = ref<(string | null)[][]>(
+  Array.from({ length: 4 }, () => Array(4).fill(null))
+);
+const imageLoaded = ref<boolean[][]>(
+  Array.from({ length: 4 }, () => Array(4).fill(false))
+);
 
-const routeToReview = (index: number) => {
-  router.push({ name: ["year-one", "year-two", "year-three"][index] })
-}
-
-onBeforeMount(async () => {
-  for (let i = 0; i < albumYears.length; i += 1) {
-    const year: string[] = [];
-    for (let j = 0; j < albumYears[i].length; j += 1) {
-      // @ts-ignore
-      const response = await albumArt(albumYears[i][j].artist, { album: albumYears[i][j].album });
-      year.push(response as string);
-    }
-    albumYearUrls.value.push(year);
-  }
+onBeforeMount(() => {
+  albumYears.forEach((year, y) => {
+    year.forEach((entry, a) => {
+      albumArt(entry.artist, { album: entry.album })
+        .then(url => { albumYearUrls.value[y][a] = url as string; })
+        .catch(()  => { albumYearUrls.value[y][a] = ''; });
+    });
+  });
 });
 </script>
 
 <template>
-
   <head>
     <title>Ethan Chaplin — Year In Review</title>
   </head>
   <div class="absolute z-0 wave">
     <img src="/src/assets/wave.png">
   </div>
-  <div class="flex items-center h-full justify-evenly">
-    <VueCard v-for="(_, index) in albumYearUrls.length" :isPressable="true" :isBlurred="true"
-      :className="`py-4 border-none bg-background/60 dark:bg-default-100/50 hover-card max-w-sm`"
-      :onPress="() => routeToReview(index)">
-      <VueCardHeader :className="`pb-0 pt-2 px-4 flex-col items-start`">
-        <p class="text-small uppercase font-bold">{{ titles[index] }}</p>
-        <small class="text-default-500">{{ creditHours[index] }} Tracks</small>
-        <h4 class="font-bold text-3xl">Year {{ index + 1 }}</h4>
-      </VueCardHeader>
-      <VueCardBody :className="`overflow-visible py-2 grid grid-cols-2`">
-        <VueImage v-for="(_, corner) in 4" alt="Card background" :className="`object-cover rounded-xl col-span-1`"
-          :src="albumYearUrls[index][corner]" :width=270 />
-      </VueCardBody>
-    </VueCard>
+  <div class="flex items-center justify-center min-h-screen py-24 px-8">
+    <div class="grid grid-cols-2 gap-6 w-full max-w-3xl">
+      <div
+        v-for="(year, index) in albumYears"
+        :key="index"
+        class="year-card cursor-pointer rounded-2xl overflow-hidden"
+        @click="router.push({ name: routes[index] })">
+        <!-- 2×2 album grid -->
+        <div class="grid grid-cols-2">
+          <div v-for="(entry, corner) in year" :key="corner" class="relative aspect-square overflow-hidden">
+            <!-- Skeleton with white swipe -->
+            <div v-if="!imageLoaded[index][corner]" class="skeleton-cell absolute inset-0">
+              <div class="swipe" />
+            </div>
+            <!-- Album art -->
+            <img
+              v-if="albumYearUrls[index][corner] !== null"
+              :src="albumYearUrls[index][corner] ?? ''"
+              :alt="entry.album"
+              class="w-full h-full object-cover transition-opacity duration-500"
+              :class="imageLoaded[index][corner] ? 'opacity-100' : 'opacity-0'"
+              @load="imageLoaded[index][corner] = true" />
+          </div>
+        </div>
+        <!-- Card footer -->
+        <div class="px-4 pt-3 pb-4 text-left">
+          <p class="text-xs uppercase font-bold text-white/60 tracking-widest">{{ titles[index] }}</p>
+          <p class="text-neutral-500 text-xs mt-0.5">{{ subtitles[index] }}</p>
+          <h4 class="font-bold text-2xl mt-1">Year {{ index + 1 }}</h4>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .wave {
+  position: fixed;
   bottom: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.year-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.year-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.skeleton-cell {
+  background: transparent;
+  overflow: hidden;
+}
+
+.swipe {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.07) 35%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.07) 65%,
+    transparent 80%
+  );
+  background-size: 300% 100%;
+  animation: swipe 2s ease-in-out infinite;
+}
+
+@keyframes swipe {
+  0%   { background-position: 250% 0; }
+  100% { background-position: -250% 0; }
 }
 </style>

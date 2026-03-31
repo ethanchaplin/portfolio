@@ -62,6 +62,7 @@ const showTitle = () => {
 </script>
 
 <template>
+  <div class="home-root">
   <head>
     <title>Ethan Chaplin — Home Page</title>
   </head>
@@ -75,13 +76,21 @@ const showTitle = () => {
     </div>
   </MovingBackground>
   <!-- <div class="h-5/6" id="lower">TEST</div> -->
+  </div>
 </template>
 
 <style scoped>
+.home-root {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
 .typer {
   width: 100%;
   height: 100%;
 }
+
 .abs {
   position: absolute;
   display: flex;
@@ -94,6 +103,7 @@ const showTitle = () => {
   backdrop-filter: blur(3px);
   padding: 3rem;
 }
+
 .center-box {
   height: 100%;
   width: 100%;
@@ -105,5 +115,4 @@ const showTitle = () => {
   align-items: center;
   justify-content: center;
 }
-
 </style>

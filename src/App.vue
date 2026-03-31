@@ -1,42 +1,23 @@
 <script setup lang="ts"></script>
 
 <template>
-  <link
-    rel="stylesheet"
-    href="https://unicons.iconscout.com/release/v2.1.5/css/unicons.css"
-  />
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.5/css/unicons.css" />
   <div class="nav">
     <div class="nav-left">
-      <a
-        target="_blank"
-        rel="noreferrer noopener"
-        href="https://www.linkedin.com/in/ethan-chaplin/"
-        ><i class="uil uil-linkedin"> </i
-      ></a>
-      <a
-        target="_blank"
-        rel="noreferrer noopener"
-        href="https://github.com/ethanchaplin/"
-        ><i class="uil uil-github"></i
-      ></a>
-      <a
-        target="_blank"
-        rel="noreferrer noopener"
-        href="https://www.instagram.com/ethan__chaplin/"
-        ><i class="uil uil-instagram"></i
-      ></a>
-      <a
-        target="_blank"
-        rel="noreferrer noopener"
-        href="mailto:chapliep@mail.uc.edu"
-        ><i class="uil uil-envelope"></i
-      ></a>
+      <a target="_blank" rel="noreferrer noopener" href="https://www.linkedin.com/in/ethan-chaplin/"><i
+          class="uil uil-linkedin"> </i></a>
+      <a target="_blank" rel="noreferrer noopener" href="https://github.com/ethanchaplin/"><i
+          class="uil uil-github"></i></a>
+      <a target="_blank" rel="noreferrer noopener" href="https://www.instagram.com/ethan__chaplin/"><i
+          class="uil uil-instagram"></i></a>
+      <a target="_blank" rel="noreferrer noopener" href="mailto:chapliep@mail.uc.edu"><i
+          class="uil uil-envelope"></i></a>
     </div>
     <div class="nav-right">
       <h3><router-link to="/">About Me</router-link></h3>
       <h3><router-link to="/yearreview">Year In Review</router-link></h3>
       <h3>
-        <a href="https://ethanchaplin.com/old/projects/">Honors Projects</a>
+        <router-link to="/projects">Honors Projects</router-link>
       </h3>
       <h3><a href="https://github.com/ethanchaplin?tab=repositories">Personal Projects</a></h3>
     </div>
@@ -58,6 +39,7 @@
   backdrop-filter: blur(3px);
   z-index: 100;
 }
+
 .uil {
   font-size: 1.5rem;
   padding-right: 10px;
@@ -71,9 +53,10 @@ h3 a {
 }
 
 .nav div {
-  padding: 5rem;
+  padding: 0 2rem;
   display: flex;
   gap: 3rem;
+  align-items: center;
 }
 
 .nav * * {

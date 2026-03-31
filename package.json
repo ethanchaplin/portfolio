@@ -11,6 +11,7 @@
     "@nextui-org/react": "^2.0.8",
     "@vitejs/plugin-react": "^4.0.4",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "album-art": "^4.0.0",
     "core-js": "^3.8.3",
     "framer-motion": "^10.15.1",
     "js-cookie": "^3.0.5",
