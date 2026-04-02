@@ -8,6 +8,9 @@ const MAX_SPEED = 0.5;
 const RADIUS = 8;
 const CONNECT_DIST = 250;
 const NOTE_COOLDOWN = 180; // ms — prevents same ball re-triggering every frame
+const NOTES_PER_OCTAVE = 5;
+const REPULSE_DIST = 0;     // px — range at which same-family particles start repelling
+const REPULSE_STRENGTH = 0.06; // acceleration applied per frame at closest point
 
 
 const BASE_FREQ = 150;
@@ -157,6 +160,29 @@ const tick = () => {
       p.y = RADIUS; p.vy = Math.abs(p.vy); tryPlay(p, Math.abs(p.vy));
     } else if (p.y > canvas.height - RADIUS) {
       p.y = canvas.height - RADIUS; p.vy = -Math.abs(p.vy); tryPlay(p, Math.abs(p.vy));
+    }
+  }
+
+  // Same-family repulsion (charged particles)
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j];
+      if (a.note % NOTES_PER_OCTAVE !== b.note % NOTES_PER_OCTAVE) continue;
+
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist === 0 || dist >= REPULSE_DIST) continue;
+
+      const force = REPULSE_STRENGTH * (1 - dist / REPULSE_DIST);
+      const nx = dx / dist, ny = dy / dist;
+      a.vx -= force * nx; a.vy -= force * ny;
+      b.vx += force * nx; b.vy += force * ny;
+
+      // Clamp speed so repulsion doesn't accelerate them beyond MAX_SPEED
+      for (const p of [a, b]) {
+        const spd = Math.hypot(p.vx, p.vy);
+        if (spd > MAX_SPEED) { p.vx *= MAX_SPEED / spd; p.vy *= MAX_SPEED / spd; }
+      }
     }
   }
 

@@ -1,4 +1,24 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import AudioPlayer from '@/components/AudioPlayer.vue';
+
+import demo7 from '@/assets/demo_7.mp3';
+import demo1 from '@/assets/demo_1.mp3';
+import demo2 from '@/assets/demo_2.mp3';
+import demo3 from '@/assets/demo_3.mp3';
+import demo4 from '@/assets/demo_4.mp3';
+import demo5 from '@/assets/demo_5.mp3';
+import demo6 from '@/assets/demo_6.mp3';
+
+const demos = [
+    { src: demo7, title: 'Remember When', subtitle: 'Pop-ish Rock Track' },
+    { src: demo1, title: 'Demo 2', subtitle: 'One of my personal favorites' },
+    { src: demo2, title: 'Strat', subtitle: 'Indie Kinda Vibe' },
+    { src: demo3, title: 'Demo 4', subtitle: 'Surfer Rock' },
+    { src: demo4, title: 'Demo 5', subtitle: 'Very Bruce Springsteen Inspired' },
+    { src: demo5, title: 'Nevada', subtitle: 'Moody End Credits Kinda Thing' },
+    { src: demo6, title: 'Demo 7', subtitle: 'Bad Suns-Esque' },
+];
+</script>
 
 <template>
     <div class="pt-28 pb-24 px-8 max-w-3xl mx-auto text-left">
@@ -74,6 +94,16 @@
                 Also it hurts. Like a lot. I don't ever remember being sore after playing the piano, but I was left with
                 divots in the tips of my fingers many times after practicing.
             </p>
+        </div>
+
+        <!-- Demos -->
+        <div class="section-header mb-5">
+            <h2 class="text-sm font-bold text-amber-400 uppercase tracking-widest whitespace-nowrap">Demos</h2>
+            <div class="flex-1 h-px bg-amber-400/20"></div>
+        </div>
+        <div class="flex flex-col gap-3 mb-12">
+            <AudioPlayer v-for="demo in demos" :key="demo.src" :src="demo.src" :title="demo.title"
+                :subtitle="demo.subtitle" />
         </div>
 
         <!-- Practice Log link -->
